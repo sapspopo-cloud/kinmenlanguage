@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>金聲學堂：金門音真趣味 教學網站</title>
+  <style>
+    :root {
+      --primary-color: #a83226;
+      --secondary-color: #8c271e;
+      --accent-color: #d97724;
+      --bg-color: #fcf9f2;
+      --card-bg: #ffffff;
+      --text-color: #2c2c2c;
+      --border-color: #e2d7c5;
+      --sidebar-width: 280px;
+      --font-scale: 1;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans TC", sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      font-size: calc(16px * var(--font-scale));
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: var(--sidebar-width);
+      background-color: #2b2523;
+      color: #f5efe6;
+      position: fixed;
+      top: 0; bottom: 0; left: 0;
+      overflow-y: auto;
+      z-index: 100;
+      transition: transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-header {
+      padding: 20px;
+      background: var(--primary-color);
+      border-bottom: 2px solid var(--accent-color);
+    }
+    .sidebar-header h2 { font-size: 1.2rem; color: #fff; margin-bottom: 4px; }
+    .sidebar-header p { font-size: 0.8rem; color: #ffebad; }
+
+    .nav-links { list-style: none; padding: 10px 0; }
+    .nav-links li a {
+      display: block;
+      padding: 12px 20px;
+      color: #d1c7bd;
+      text-decoration: none;
+      font-size: 0.95rem;
+      border-left: 4px solid transparent;
+      transition: all 0.2s;
+    }
+    .nav-links li a:hover, .nav-links li a.active {
+      color: #ffffff;
+      background-color: rgba(255, 255, 255, 0.08);
+      border-left-color: var(--accent-color);
+    }
+
+    .main-wrapper {
+      margin-left: var(--sidebar-width);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-bar {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-color);
+      padding: 10px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 90;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+    }
+
+    .controls button {
+      background: #f0e6d6;
+      border: 1px solid #d4c3ab;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: #555;
+      margin-left: 5px;
+    }
+    .controls button:hover { background: #e2d1b8; color: #111; }
+
+    .mobile-toggle { display: none; background: var(--primary-color); color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; }
+
+    .content { padding: 40px 60px; max-width: 1000px; margin: 0 auto; width: 100%; }
+
+    .banner-card {
+      background: linear-gradient(135deg, #a83226 0%, #7a1d15 100%);
+      color: white;
+      padding: 35px;
+      border-radius: 12px;
+      margin-bottom: 40px;
+      box-shadow: 0 4px 15px rgba(168, 50, 38, 0.2);
+    }
+    .banner-card h1 { font-size: 2rem; margin-bottom: 10px; color: #fff; }
+    .banner-card p { font-size: 1.1rem; color: #fbe3b5; }
+
+    section {
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+
+    h2.section-title {
+      color: var(--primary-color);
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+      font-size: 1.4rem;
+    }
+    h3.sub-title {
+      color: var(--secondary-color);
+      margin: 20px 0 10px 0;
+      font-size: 1.15rem;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    .info-box {
+      background: #fdfaf5;
+      border: 1px solid var(--border-color);
+      padding: 15px;
+      border-radius: 6px;
+    }
+    .info-box strong { color: var(--primary-color); display: block; margin-bottom: 5px; }
+
+    .game-card {
+      background: #fdfbf7;
+      border-left: 4px solid var(--accent-color);
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 0 6px 6px 0;
+      border: 1px solid #eee;
+      border-left-width: 4px;
+    }
+    .game-card h4 { color: var(--primary-color); font-size: 1.1rem; margin-bottom: 8px; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+      font-size: 0.95rem;
+    }
+    th, td {
+      border: 1px solid var(--border-color);
+      padding: 10px 12px;
+      text-align: left;
+    }
+    th { background: #f4ece1; color: var(--secondary-color); font-weight: bold; }
+    tr:nth-child(even) { background-color: #faf6f0; }
+
+    .score-board {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-top: 15px;
+    }
+    .player-card {
+      background: #fdfbf7;
+      border: 2px solid var(--border-color);
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .player-score { font-size: 2.2rem; font-weight: bold; color: var(--primary-color); margin: 10px 0; }
+    .score-btn {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      margin: 0 2px;
+    }
+    .score-btn.sub { background: #666; }
+
+    .search-box {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      margin-bottom: 15px;
+      font-size: 1rem;
+    }
+
+    @media (max-width: 900px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .main-wrapper { margin-left: 0; }
+      .mobile-toggle { display: block; }
+      .content { padding: 20px; }
+      .score-board { grid-template-columns: 1fr; }
+    }
+
+    @media print {
+      .sidebar, .top-bar, .controls, .interactive-tool { display: none !important; }
+      .main-wrapper { margin-left: 0; }
+      body { background: white; color: black; font-size: 12pt; }
+      section { border: none; box-shadow: none; padding: 0; margin-bottom: 20px; page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h2>金聲學堂</h2>
+      <p>金門音真趣味 教學網站</p>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#intro" class="active">設計緣起與價值</a></li>
+      <li><a href="#setup">遊戲基本資訊與設置</a></li>
+      <li><a href="#gameplay">九大遊戲玩法說明</a></li>
+      <li><a href="#cards">撲克牌與卡片介紹</a></li>
+      <li><a href="#attachment1">遊戲計分卡</a></li>
+      <li><a href="#attachment2">聲母+單元音參考字</a></li>
+      <li><a href="#copyright">版權頁資訊</a></li>
+    </ul>
+  </aside>
+
+  <div class="main-wrapper">
+    <div class="top-bar">
+      <button class="mobile-toggle" onclick="toggleSidebar()">☰ 目錄</button>
+      <div style="font-weight: bold; color: var(--primary-color);">金聲學堂：金門音真趣味 教學網站</div>
+      <div class="controls">
+        <button onclick="changeFontSize(0.1)">A+</button>
+        <button onclick="changeFontSize(-0.1)">A-</button>
+        <button onclick="window.print()">🖨 列印</button>
+      </div>
+    </div>
+
+    <main class="content">
+      
+      <div class="banner-card">
+        <h1>金聲學堂：金門音真趣味</h1>
+        <p>【傳承島嶼之音：金門話拼音教學桌遊】設計緣起與使用說明書</p>
+        <div style="margin-top: 15px; font-size: 0.9rem; opacity: 0.9;">
+          出版：金門縣政府 | 桌遊設計：薛奕龍
+        </div>
+      </div>
+
+      <!-- 設計緣起與價值 -->
+      <section id="intro">
+        <h2 class="section-title">設計緣起與價值</h2>
+        
+        <h3 class="sub-title">一、時代的失聲與追尋</h3>
+        <p>金門，這座承載著深厚閩南文化底蘊的海島，正經歷著語言傳承的斷層。隨著現代生活型態的轉變，曾經穿梭於紅磚古厝間、饒富韻味的在地腔調（金門話），正逐漸在校園與家庭中淡去。對新一代學子而言，母語不再是生活中的自然呼吸，而是一門「最熟悉的陌生語言」。</p>
+
+        <h3 class="sub-title">二、從「拼音」到「共感」</h3>
+        <p>在推廣本土語言的教學現場，我們發現傳統的書面背誦往往讓孩子望而生畏。為了打破語言學習的隔閡，我們決定將在地文化與遊戲機制結合，設計這套專屬於金門的拼音教學卡牌。</p>
+        <p>透過拼音系統的標準化，我們賦予口語一套可視覺化的邏輯，讓學習者能精準掌握金門腔獨有的入聲與韻母。而桌遊的互動形式，則讓孩子在「玩」的過程中自然開口，消除對母語的生疏感。</p>
+
+        <h3 class="sub-title">三、桌遊的設計意義與價值</h3>
+        <p>這份桌遊不僅僅是一項教學教具，它更具備了以下三重價值：</p>
+        <ul style="margin-left: 20px; margin-top: 5px;">
+          <li><strong>文化認同的紮根：</strong>卡牌內頁融入金門在地的自然地景與常用文字，讓孩子在練習拼音的同時，也完成了一次次對家鄉文化的深度巡禮。</li>
+          <li><strong>跨世代的溝通橋樑：</strong>當孩子學會了正確的拼音與發音，他們將更有勇氣與家中的祖父母對話。這種由校園延伸至家庭的互動，正是母語復振最核心的動力。</li>
+          <li><strong>寓教於樂的教學變革：</strong>藉由卡牌策略機制，將枯燥的音韻練習轉化為競技與合作的樂趣，提升學習動機，證明母語教學也能與現代教育趨勢並行不悖。</li>
+        </ul>
+
+        <h3 class="sub-title">四、展望：讓在地話成為活的力量</h3>
+        <p>我們深信，一種語言的生命力不在於教科書裡，而是在孩子的歡笑聲中。透過這份拼音桌遊卡牌，我們期待在孩子心中種下一顆種子，讓金門話不再只是「老一輩說的話」，而是能陪伴他們探索家鄉、連結情感，並引以為傲的島嶼之音。</p>
+      </section>
+
+      <!-- 遊戲說明與準備 -->
+      <section id="setup">
+        <h2 class="section-title">遊戲說明與準備</h2>
+        <p style="margin-bottom: 15px;">「金聲學堂—金門音真趣味」金門話學習桌遊，讓金門話學習變得更有趣！這不僅是一款有趣好玩的桌遊，更是一場生動知性的客語學習之旅。透過遊戲模式，您將在歡聲笑語中，逐步掌握金門語的聲母、韻母與拼音。準備好了嗎？邀請您一起來展開您的金門話學習冒險旅程！</p>
+
+        <div class="info-grid">
+          <div class="info-box">
+            <strong>🎮 遊戲基本資訊</strong>
+            👥 人數：2-3人<br>
+            ⏱ 時間：10-30分鐘<br>
+            👶 年齡：6歲以上
+          </div>
+          <div class="info-box">
+            <strong>📦 內容物</strong>
+            • 遊戲圖板 × 1張<br>
+            • 遊戲公仔 × 3個<br>
+            • 六面骰子 × 1個<br>
+            • 金門話音標撲克牌 × 1組<br>
+            • 金門話漢字 × 1組<br>
+            • 說明書 1本
+          </div>
+        </div>
+
+        <h3 class="sub-title">● 遊戲準備與設置</h3>
+        <ol style="margin-left: 20px; line-height: 1.8;">
+          <li>將遊戲圖板放置於桌面中央。</li>
+          <li>每位玩家選擇一枚遊戲公仔（可用跳棋子、小公仔、小橡皮擦替代），放在「起點」格。</li>
+          <li>將音標卡依照聲母、漢字、韻母，面朝上放置於圖板上指定的位置。</li>
+          <li>猜拳決定玩家順序後開始遊戲。</li>
+          <li>準備計分卡（可使用本網頁內建之數位計分板或影印附件一）。</li>
+        </ol>
+      </section>
+
+      <!-- 遊戲玩法 -->
+      <section id="gameplay">
+        <h2 class="section-title">九大遊戲玩法說明</h2>
+
+        <div style="background: #fff8eb; padding: 10px 15px; border-radius: 4px; margin-bottom: 20px; font-weight: bold; color: #b86200;">
+          💡 玩法一與玩法二綜合複習用，需要圖紙。
+        </div>
+
+        <div class="game-card">
+          <h4>玩法一：音標大挑戰</h4>
+          <p><strong>遊戲目標：</strong>累積最高分數，展現對金門話音標的掌握度。</p>
+          <p><strong>遊戲準備：</strong>將漢字牌在圖紙格子上，每一格放一張。聲母卡放在中間聲母的位置、單元音卡放在韻母的位置。（當目標單字不同時，可以更換不同的韻母卡，本組桌遊漢字以聲母+單元音+第一調作為示範。玩家可以自行利用空白卡片紙書寫目標學習文字）</p>
+          <p><strong>遊戲流程：</strong></p>
+          <ol style="margin-left: 20px;">
+            <li>玩家擲骰子決定走幾步，走到停留位子上時，需先念出該位子的金門話漢字（例如：疤）。</li>
+            <li>接著從遊戲圖板上依序從卡片拼出【疤】的聲母 (p) + 韻母 (a)。</li>
+            <li>答對者即在計分卡上 +10分，念不出來可以求救老師或同學，正確後可以得 5分。</li>
+            <li>每次經過或停在起點，獲得 20分。</li>
+          </ol>
+          <p><strong>獲勝條件：</strong>先達到 100分或是時間到最高分者獲勝。</p>
+          
+          <div style="margin-top: 10px; background: #fff; padding: 10px; border-radius: 4px; border: 1px solid #ead6c0;">
+            <strong>🎲 機會格子說明：</strong><br>
+            • 骰到 1：前進 3步，可繼續得分。<br>
+            • 骰到 2：後退 4步，可繼續得分。<br>
+            • 骰到 3：退回起點，不得分。<br>
+            • 骰到 4：指定一個玩家後退 2步，指定玩家移動後不用拼音也不計分。<br>
+            • 骰到 5：再投一次骰子，依點數前進，前進後可繼續得分。<br>
+            • 骰到 6：念出圖板上的 5個單字，念得出來得 10分，念不出來則不得分。
+          </div>
+        </div>
+
+        <!-- 聲調手勢對照表 -->
+        <h3 class="sub-title">✋ 聲調手勢動作對照表</h3>
+        <p style="font-size: 0.9rem; margin-bottom: 10px;">走到聲調手勢處，要唸出以下文字並比出手勢：</p>
+        <table>
+          <thead>
+            <tr><th>拼音</th><th>例字</th><th>手勢動作</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>sann</td><td>衫</td><td>手掌平放在額頭平移</td></tr>
+            <tr><td>tér</td><td>短</td><td>右手從右上往左下揮</td></tr>
+            <tr><td>khòo</td><td>褲</td><td>右手從左胸前往右下揮</td></tr>
+            <tr><td>khuah</td><td>闊</td><td>右手握拳在肚子前</td></tr>
+            <tr><td>lâng</td><td>人</td><td>雙手在頭上做一個尖尖的帽子</td></tr>
+            <tr><td>ué</td><td>矮</td><td>右手從右上往左下揮</td></tr>
+            <tr><td>phī</td><td>鼻</td><td>手掌平放在肚子前平移</td></tr>
+            <tr><td>tit</td><td>直</td><td>右手握拳在額頭前</td></tr>
+          </tbody>
+        </table>
+
+        <div class="game-card">
+          <h4>玩法二：音標搶答賽</h4>
+          <p><strong>遊戲目標：</strong>最快搶答並累積最高分數，考驗音標反應速度。</p>
+          <p><strong>遊戲設置：</strong>拿出 2個公仔（設定 1個代表回答音標，1個代表回答單字），所有玩家圍在圖板周圍。</p>
+          <p><strong>遊戲流程：</strong></p>
+          <ol style="margin-left: 20px;">
+            <li>一位主持人負責抽卡。</li>
+            <li>主持人每次從「音標卡」中抽出一張並放在圖板上（例如：「a」）。</li>
+            <li>所有玩家同時搶答，拿到公仔者方能回答。正確念出該音標者（如看到「a」搶答「ㄚ」）得 10分；正確念出該音標之單字者（如看到「a」搶答「疤」，不限漢字卡單字）得 20分。</li>
+            <li>回答錯誤無分數。</li>
+          </ol>
+          <p><strong>獲勝條件：</strong>最高獲得 100分者獲勝，或指定遊戲時間結束（如計時 5-10分鐘）最高分者獲勝。</p>
+        </div>
+
+        <div style="background: #edf7ed; padding: 10px 15px; border-radius: 4px; margin-bottom: 20px; font-weight: bold; color: #2e7d32;">
+          💡 玩法三至玩法九配合教學用，不需要圖紙。
+        </div>
+
+        <div class="game-card">
+          <h4>玩法三：配合課文的目標拼音練習</h4>
+          <p>挑出課文中目標學習的聲母與韻母，聲母疊成一疊，韻母疊成一疊。兩個人各翻出一張，先拼出來的獲勝採計 20分，後拼出來的採計 10分。（100分或時間到結算）</p>
+        </div>
+
+        <div class="game-card">
+          <h4>玩法四：我不要單字牌</h4>
+          <p>取出相同張數的聲母跟韻母，並加入一張單字牌。玩家發一樣張數，手中有一張聲母+一張韻母即可打出並唸出來放在桌上。無法打出時，順時針輪流抽旁邊的人一張牌繼續組牌。最先打完手中牌得 20分，第二名 10分，第三名 5分。</p>
+        </div>
+
+        <div class="game-card">
+          <h4>玩法五：同系列配對</h4>
+          <p>挑出幾組牌（數量為人數倍數），每人發 5張，其餘置於桌面作抽牌堆，並先翻開 3張桌牌。玩家每回合可打出與桌面相同牌組類型的牌（如都是聲母或單韻母），合成一組並唸出來即可拿回作為得分牌並補牌。牌打完後計算得分牌數量，每張 1分。</p>
+        </div>
+
+        <div class="game-card">
+          <h4>玩法六：抽卡片拼音</h4>
+          <p>學生抽聲母卡，老師抽韻母卡（例如「a」）。拿到對應聲母（如「kh」）的學生舉手走至老師旁念出「kh, kh, kh, kh, a, kha」進行拼音。每成功拼音一次得 10分。</p>
+        </div>
+
+        <div class="game-card">
+          <h4>玩法七：移動組拼音</h4>
+          <p>一半學生拿聲母卡圍外圈，一半拿韻母卡圍內圈，兩兩面對面念出組合拼音。老師喊「換位置」時，外圈向右移動一步重新拼音。每成功拼音一次得 10分。</p>
+        </div>
+
+        <div class="game-card">
+          <h4>玩法八：過山洞</h4>
+          <p>兩人搭手臂當山洞（代表韻母卡如「a」），過山洞學生拿聲母卡（如「m」），邊過邊讀出「m, m, m 欲過山洞，m, a, ma」。成功一次得 10分。</p>
+        </div>
+
+        <div class="game-card">
+          <h4>玩法九：拼音舉牌</h4>
+          <p>四位學生至台前（兩位拿聲母、兩位拿韻母）。老師說出「phi」時，拿「ph」與「i」的學生須迅速舉牌並讀出「ph, i, phi，阮佇遮 (tsiô)」。答對者得 10分。</p>
+        </div>
+      </section>
+
+      <!-- 撲克牌介紹 -->
+      <section id="cards">
+        <h2 class="section-title">金門話音標撲克牌介紹（共108張）</h2>
+        
+        <h3 class="sub-title">1. 音標卡分類</h3>
+        <ul style="margin-left: 20px; line-height: 1.8;">
+          <li><strong>聲母（16張）：</strong>
+            <br>• 唇音、舌尖音 (8)：p, ph, b, m, t, th, n, l
+            <br>• 舌根音、喉音、齒音 (8)：k, kh, g, ng, h, ts, tsh, s
+          </li>
+          <li style="margin-top: 10px;"><strong>韻母（68張）：</strong>
+            <br>• 單元音 (8)：a, i, u, e, o, oo, er, ir
+            <br>• 複元音 (10)：ai, au, ia, iu, io, ua, ui, ue, iau, uai
+            <br>• 鼻化元音 (10)：ann, inn, ainn, aunn, iann, iunn, uinn, iaunn, uann, uainn
+            <br>• 鼻音韻母 (14)：am, im, iam, an, in, un, ian, uan, ang, ing, ong, iang, iong, uang
+            <br>• 入聲字母 (26)：ah, ih, uh, eh, oh, auh, iah, iuh, ioh, uah, uih, ueh, iauh, ap, ip, iap, at, it, ut, iat, uat, ak, ik, ok, iak, iok
+          </li>
+        </ul>
+
+        <h3 class="sub-title">2. 漢字卡（24張）</h3>
+        <p>聲母 + 單元音 + 第一調：疤、褒、飛、葩、鋪、摸、炱、刀、豬、嗲、推、拈、嘮、鉸、加、跤、科、哈、虛、這、租、痴、捎、需。</p>
+
+        <h3 class="sub-title">📊 牌卡組別與數量總表</h3>
+        <table>
+          <thead>
+            <tr><th>組別 (底色分類)</th><th>項目</th><th>數量</th><th>包含內容 / 音標標籤</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>第一組</td><td>唇音、舌尖音、舌根音、喉音、齒音</td><td>16</td><td>p, ph, b, m, t, th, n, l, k, kh, g, ng, h, ts, tsh, s</td></tr>
+            <tr><td>第二組</td><td>單元音</td><td>8</td><td>a, i, u, e, o, oo, er, ir</td></tr>
+            <tr><td>第三組</td><td>複元音</td><td>10</td><td>ai, au, ia, iu, io, ua, ui, ue, iau, uai</td></tr>
+            <tr><td>第四組</td><td>鼻化元音</td><td>10</td><td>ann, inn, ainn, aunn, iann, iunn, uinn, iaunn, uann, uainn</td></tr>
+            <tr><td>第五組</td><td>鼻音韻母</td><td>14</td><td>am, im, iam, an, in, un, ian, uan, ang, ing, ong, iang, iong, uang</td></tr>
+            <tr><td>第六組</td><td>入聲字母</td><td>26</td><td>ah, ih, uh, eh, oh, auh, iah, iuh, ioh, uah, uih, ueh, iauh, ap, ip, iap, at, it, ut, iat, uat, ak, ik, ok, iak, iok</td></tr>
+            <tr><td>第七組</td><td>漢字卡</td><td>24</td><td>疤、褒、飛、葩、鋪、摸、炱、刀、豬、嗲、推、拈、嘮、鉸、加、跤、科、哈、虛、這、租、痴、捎、需</td></tr>
+            <tr style="font-weight: bold; background: #eee8de;">
+              <td colspan="2">總計</td><td>108張</td><td>完整桌遊卡牌組</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- 遊戲計分卡 -->
+      <section id="attachment1" class="interactive-tool">
+        <h2 class="section-title">遊戲計分卡（數位互動版）</h2>
+        <p style="margin-bottom: 15px;">可在課堂遊戲中直接點擊按鈕加減分，或進行一鍵重置。</p>
+
+        <div class="score-board">
+          <div class="player-card">
+            <h3>玩家一</h3>
+            <div class="player-score" id="score1">0</div>
+            <button class="score-btn" onclick="updateScore(1, 10)">+10</button>
+            <button class="score-btn" onclick="updateScore(1, 5)">+5</button>
+            <button class="score-btn sub" onclick="updateScore(1, -5)">-5</button>
+          </div>
+          <div class="player-card">
+            <h3>玩家二</h3>
+            <div class="player-score" id="score2">0</div>
+            <button class="score-btn" onclick="updateScore(2, 10)">+10</button>
+            <button class="score-btn" onclick="updateScore(2, 5)">+5</button>
+            <button class="score-btn sub" onclick="updateScore(2, -5)">-5</button>
+          </div>
+          <div class="player-card">
+            <h3>玩家三</h3>
+            <div class="player-score" id="score3">0</div>
+            <button class="score-btn" onclick="updateScore(3, 10)">+10</button>
+            <button class="score-btn" onclick="updateScore(3, 5)">+5</button>
+            <button class="score-btn sub" onclick="updateScore(3, -5)">-5</button>
+          </div>
+        </div>
+        <div style="text-align: center; margin-top: 20px;">
+          <button onclick="resetScores()" style="background: #666; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">🔄 重置所有分數</button>
+        </div>
+      </section>
+
+      <!-- 聲母+單元音參考字 -->
+      <section id="attachment2">
+        <h2 class="section-title">金門話拼音：聲母+單元音參考字對照表</h2>
+        
+        <input type="text" id="searchBox" class="search-box" placeholder="🔍 輸入漢字、拼音或解釋即可快速搜尋..." onkeyup="filterTable()">
+
+        <table id="pinyinTable">
+          <thead>
+            <tr><th>編號</th><th>台語字</th><th>拼音</th><th>解釋</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>疤</td><td>pa</td><td>瘡口或傷口癒合後所留下的痕跡。</td></tr>
+            <tr><td>2</td><td>扒</td><td>pe</td><td>用筷子把食物撥進嘴裡</td></tr>
+            <tr><td>3</td><td>悲</td><td>pi</td><td>悲傷：心情低落難過。</td></tr>
+            <tr><td>4</td><td>褒</td><td>po</td><td>稱讚、恭維。</td></tr>
+            <tr><td>5</td><td>埔</td><td>poo</td><td>泛指平坦的地方。</td></tr>
+            <tr><td>6</td><td>飛</td><td>per</td><td>在空中飛行。</td></tr>
+            <tr><td>7</td><td>葩</td><td>pha</td><td>計算燈火的單位。</td></tr>
+            <tr><td>8</td><td>披</td><td>phi</td><td>把東西展開來披掛。</td></tr>
+            <tr><td>9</td><td>胚</td><td>pher</td><td>指在發育初期的動物。</td></tr>
+            <tr><td>10</td><td>鋪</td><td>phoo</td><td>陳設、布置。</td></tr>
+            <tr><td>11</td><td>摸</td><td>boo</td><td>用手輕輕觸碰或摩擦，以感覺或尋找物體。</td></tr>
+            <tr><td>12</td><td>抓</td><td>mi</td><td>用手抓一把。</td></tr>
+            <tr><td>13</td><td>焦 / 吶</td><td>ta / na</td><td>形容物體乾燥沒有水分 / 只有、僅僅。</td></tr>
+            <tr><td>14</td><td>刀</td><td>to</td><td>供切、削、剪、刻、割、斬等用途的工具。</td></tr>
+            <tr><td>15</td><td>豬</td><td>tir</td><td>動物名。</td></tr>
+            <tr style="background-color: #fff3e0;"><td>16</td><td><strong>炱</strong></td><td>ter</td><td>蚵炱：以牡蠣和蔬菜為餡料的油炸點心。</td></tr>
+            <tr><td>17</td><td>屜</td><td>the</td><td>身體半躺臥，小憩。</td></tr>
+            <tr><td>18</td><td>推</td><td>ther</td><td>委卸、推辭。</td></tr>
+            <tr><td>19</td><td>拈</td><td>ni</td><td>用手指輕輕地取物。</td></tr>
+            <tr><td>20</td><td>嘮</td><td>lo</td><td>嘮唆：反覆碎碎念。</td></tr>
+            <tr><td>21</td><td>鉸</td><td>ka</td><td>用剪刀將物品裁割、切割或修割。</td></tr>
+            <tr><td>22</td><td>加</td><td>ke</td><td>增益、添加。</td></tr>
+            <tr><td>23</td><td>枝</td><td>ki</td><td>樹椏，樹幹從旁生出的枝條。</td></tr>
+            <tr><td>24</td><td>糕</td><td>ko</td><td>用糯米或穀類等磨粉加糖的糕點。</td></tr>
+            <tr><td>25</td><td>姑</td><td>koo</td><td>父親的姊妹。</td></tr>
+            <tr><td>26</td><td>龜</td><td>ku</td><td>爬蟲類動物。</td></tr>
+            <tr><td>27</td><td>跤</td><td>kha</td><td>腿、足。</td></tr>
+            <tr><td>28</td><td>敧</td><td>khi</td><td>傾斜。</td></tr>
+            <tr><td>29</td><td>科</td><td>kho</td><td>類別、項目。</td></tr>
+            <tr><td>30</td><td>箍</td><td>khoo</td><td>圓形或環形的塊狀物品。</td></tr>
+            <tr><td>31</td><td>區</td><td>khu</td><td>地域、一定的範圍。</td></tr>
+            <tr><td>32</td><td>哈</td><td>ha</td><td>笑聲、吐氣。</td></tr>
+            <tr><td>33</td><td>彼</td><td>he</td><td>那個。指稱較遠距離的東西。</td></tr>
+            <tr style="background-color: #fff3e0;"><td>34</td><td>虛</td><td><strong>hir</strong></td><td>軟弱、身體無力。</td></tr>
+            <tr><td>35</td><td>呼</td><td>hoo</td><td>發出吐出。</td></tr>
+            <tr><td>36</td><td>膚</td><td>hu</td><td>身體的表層。</td></tr>
+            <tr><td>37</td><td>臘 / 𡳞</td><td>tsa</td><td>腌臢：骯髒。</td></tr>
+            <tr><td>38</td><td>這</td><td>tse</td><td>指代稱較近距離的單數物品。</td></tr>
+            <tr><td>39</td><td>芝</td><td>tsi</td><td>斑芝：木棉花。</td></tr>
+            <tr><td>40</td><td>懵</td><td>tso</td><td>心煩意亂、心中或胸口氣悶不順像針刺般難受。</td></tr>
+            <tr><td>41</td><td>租</td><td>tsoo</td><td>以一定的代價出借或借用他人物品房地。</td></tr>
+            <tr><td>42</td><td>珠</td><td>tsu</td><td>蚌殼內所生的圓形物質。</td></tr>
+            <tr><td>43</td><td>差</td><td>tsha / tshe</td><td>差別 / 使喚、派遣。</td></tr>
+            <tr><td>44</td><td>痴</td><td>tshi</td><td>痴迷：著迷、入迷。</td></tr>
+            <tr><td>45</td><td>臊</td><td>tsho</td><td>具有腥味的。</td></tr>
+            <tr><td>46</td><td>粗</td><td>tshoo</td><td>不精緻的。</td></tr>
+            <tr><td>47</td><td>趨</td><td>tshu</td><td>傾斜。</td></tr>
+            <tr><td>48</td><td>捎</td><td>sa</td><td>動作粗魯，隨便就拿。</td></tr>
+            <tr><td>49</td><td>詩</td><td>si</td><td>文學體裁的一種。</td></tr>
+            <tr><td>50</td><td>挲</td><td>so</td><td>撫摸。</td></tr>
+            <tr><td>51</td><td>酥</td><td>soo</td><td>食物鬆脆可口。</td></tr>
+            <tr><td>52</td><td>需</td><td>su</td><td>需要。</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- 版權頁 -->
+      <section id="copyright">
+        <h2 class="section-title">版權與出版資訊</h2>
+        <div class="info-grid">
+          <div>
+            <p><strong>出版者：</strong>金門縣政府</p>
+            <p><strong>發行人：</strong>陳福海</p>
+            <p><strong>編輯單位：</strong>金門縣政府教育處</p>
+            <p><strong>專案執行：</strong>金門縣政府教育處、金門縣國教輔導團</p>
+            <p><strong>總督導：</strong>黃雅芬</p>
+            <p><strong>總策劃：</strong>董雲馨、洪蘋萱</p>
+            <p><strong>編務指導：</strong>李心馨</p>
+            <p><strong>執行主編：</strong>許汎穎</p>
+          </div>
+          <div>
+            <p><strong>作者 / 桌遊設計：</strong>薛奕龍</p>
+            <p><strong>編輯委員：</strong>陳玥、陳佳瑩、薛奕鳳</p>
+            <p><strong>出版日期：</strong>115年6月</p>
+            <p><strong>定價：</strong>新台幣250元</p>
+            <p><strong>承印：</strong>觀錦達文化事業有限公司</p>
+            <p><strong>電話：</strong>082-318823</p>
+            <p><strong>地址：</strong>金門縣金城鎮民生路60號</p>
+            <p><strong>ISBN：</strong>978-626-7875-05-6</p>
+            <p><strong>GPN：</strong>3811500004</p>
+          </div>
+        </div>
+        <div style="margin-top: 15px; font-size: 0.85rem; color: #666; border-top: 1px solid #eee; padding-top: 10px;">
+          著作權聲明：金門縣政府 | 商標聲明：本書所有內容未經本公司書面同意，不得以任何方式翻譯、抄襲或節錄。
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+    }
+
+    let fontScale = 1;
+    function changeFontSize(delta) {
+      fontScale = Math.max(0.8, Math.min(1.4, fontScale + delta));
+      document.documentElement.style.setProperty('--font-scale', fontScale);
+    }
+
+    const scores = { 1: 0, 2: 0, 3: 0 };
+    function updateScore(player, delta) {
+      scores[player] = Math.max(0, scores[player] + delta);
+      document.getElementById(`score${player}`).innerText = scores[player];
+    }
+    function resetScores() {
+      scores[1] = 0; scores[2] = 0; scores[3] = 0;
+      document.getElementById('score1').innerText = 0;
+      document.getElementById('score2').innerText = 0;
+      document.getElementById('score3').innerText = 0;
+    }
+
+    function filterTable() {
+      const input = document.getElementById('searchBox').value.toLowerCase();
+      const rows = document.querySelectorAll('#pinyinTable tbody tr');
+      rows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        row.style.display = text.includes(input) ? '' : 'none';
+      });
+    }
+  </script>
+</body>
+</html>
